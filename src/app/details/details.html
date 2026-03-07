@@ -1,2 +1,43 @@
-<p>details works!</p>
-<p>ID: {{id()}}</p>
+@if(flight()){
+<div class="details-wrapper">
+    <mat-card class="details-card">
+        <mat-card-content>
+            <img [src]="utils.getImageUrl(flight()!)" class="details-image">
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="details-card">
+        <mat-card-content>
+            <h1>{{flight()?.destination}}</h1>
+            <mat-list>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>calendar_today</mat-icon>
+                    <div matListItemTitle>Scheduled At</div>
+                    <div matListItemLine>{{utils.formatDate(flight()!.scheduledAt)}}</div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>flight</mat-icon>
+                    <div matListItemTitle>Airplane Model</div>
+                    <div matListItemLine>{{flight()?.plane}}</div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item>
+                    <mat-icon matListItemIcon>bookmark</mat-icon>
+                    <div matListItemTitle>Terminal</div>
+                    <div matListItemLine>{{flight()?.terminal}}</div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+
+</div>
+<mat-card class="map-card">
+    <mat-card-content>
+        <iframe width="100%" height="400" style="border: 0" loading="lazy" allowfullscreen
+            [src]="getMapUrl(flight()!.destination)"></iframe>
+    </mat-card-content>
+</mat-card>
+
+}

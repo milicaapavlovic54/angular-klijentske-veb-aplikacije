@@ -1,21 +1,32 @@
-<h1>Home</h1>
+@if(flights().length > 0){
 
-@if(flights().length >0){
-<ul>
+<div class="card-wrapper">
     @for(f of flights(); track $index){
-    <li>
-        <h3>{{f.destination}}</h3>
-        <ul>
-            <li>ID: <strong>{{f.id}}</strong></li>
-            <li>Broj leta: <strong>{{f.flightNumber}}</strong></li>
-            <li>Vreme: <strong>{{f.scheduledAt}}</strong></li>
-            <li> <a [routerLink]="`/details/${f.id}`">Detalji</a></li>
-        </ul>
-    </li>
+    <mat-card class="flight-card" appearance="outlined">
+
+        <img mat-card-image [src]="utils.getImageUrl(f)" [alt]="f.destination">
+        <mat-card-content class="card-content">
+            <mat-card-title>
+                <strong>{{f.destination}}</strong>
+            </mat-card-title>
+            <mat-card-subtitle>{{utils.formatDate(f.scheduledAt)}}</mat-card-subtitle>
+        </mat-card-content>
+        <mat-card-actions>
+            <a [routerLink]="`/details/${f.id}`" matButton>
+                <mat-icon fontIcon="description" />Details
+            </a>
+        </mat-card-actions>
+    </mat-card>
     }
-</ul>
+</div>
 }
 @else{
-<h3>Podaci se ucitavaju </h3>
-<p>Molimo sacekajte</p>
+<mat-card class="loading-card">
+    <img class="loading-image" src="/loading.gif">
+    <mat-card-content >
+        <h3>Podaci se ucitavaju </h3>
+        <p>Molimo sacekajte</p>
+    </mat-card-content>
+</mat-card>
+
 }
