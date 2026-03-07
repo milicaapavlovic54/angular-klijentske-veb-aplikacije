@@ -1,0 +1,46 @@
+@if(destinations().length>0){
+<mat-card class="small-card">
+    <mat-card-header>
+        <h1>User details</h1>
+    </mat-card-header>
+    <mat-card-content>
+        <div>
+            <mat-form-field class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="activeUser!.email" disabled>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Firest Name</mat-label>
+                <input matInput type="text" [(ngModel)]="activeUser!.firstName">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Last Name</mat-label>
+                <input matInput type="text" [(ngModel)]="activeUser!.lastName">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Address</mat-label>
+                <input matInput type="text" [(ngModel)]="activeUser!.address">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Phone Number</mat-label>
+                <input matInput type="text" [(ngModel)]="activeUser!.phone">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Favorite destination</mat-label>
+                <mat-select [(ngModel)]="activeUser!.destination">
+                    @for (d of destinations(); track d) {
+                    <mat-option [value]="d">{{d}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-card-actions>
+                <button type="button" matButton class="full-width" (click)="updateUser()">
+                    <mat-icon fontIcon="save" /> Save
+                </button>
+            </mat-card-actions>
+        </div>
+    </mat-card-content>
+</mat-card>
+}@else {
+<app-loading />
+}
