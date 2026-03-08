@@ -32,7 +32,7 @@
         </mat-card-content>
         @if(authService.getActiveUser()){
             <mat-card-actions>
-                <a [routerLink]="`/details/${flight()?.id}/booking`" matButton>
+                <a [routerLink]="`/details/${flight()?.id}/order`" matButton>
                     <mat-icon fontIcon="airplane_ticket" />Book now
                 </a>
             </mat-card-actions>

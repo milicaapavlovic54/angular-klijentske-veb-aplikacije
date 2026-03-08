@@ -95,7 +95,7 @@
             <mat-list>
                 @for(f of recommended(); track $index){
                 <mat-list-item>
-                    <mat-icon matListItemIcon>calendar_today</mat-icon>
+                    <mat-icon matListItemIcon>flight</mat-icon>
                     <div matListItemTitle>{{f.flightNumber}}</div>
                     <div matListItemLine>{{utils.formatDate(f.scheduledAt)}}</div>
                     <a [routerLink]="`/details/${f.id}`" matButton>

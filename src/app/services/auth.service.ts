@@ -1,4 +1,6 @@
 
+import { FlightModel } from "../../models/flight.model"
+import { OrderModel } from "../../models/order.model"
 import { UserModel } from "../../models/user.model"
 
 const USERS = 'users'
@@ -72,4 +74,34 @@ export class AuthService {
     static logout(){
         localStorage.removeItem(ACTIVE)
     }
+
+    static createOrder(order: Partial<OrderModel>, flight: FlightModel){
+        order.state = 'w'
+        order.flightId=flight.id
+        order.flightNumber = flight.flightNumber
+        order.scheduledAt = flight.scheduledAt
+        order.destination = flight.destination
+        order.createdAt = new Date().toISOString()
+
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                u.orders.push(order as OrderModel)
+            }
+        }
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
+    static getOrdersOnWaiting(){
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                return u.orders.filter((o)=> o.state === 'w')
+            }
+        }
+
+        return []
+    }
+
+   
 }
