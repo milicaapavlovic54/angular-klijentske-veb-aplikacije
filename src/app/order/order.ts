@@ -21,7 +21,6 @@ import { Alerts } from '../alerts';
   selector: 'app-order',
   imports: [
     MatCardModule,
-    RouterLink,
     FormsModule,
     MatButtonModule,
     Loading,
