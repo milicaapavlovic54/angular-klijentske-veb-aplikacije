@@ -19,4 +19,6 @@ export class Utils {
     const fileName = flight.destination.split(' ')[0].toLowerCase()
     return `https://img.pequla.com/destination/${fileName}.jpg`
   }
+
+  
 }
