@@ -1,10 +1,10 @@
-
 import { FlightModel } from "../../models/flight.model"
 import { OrderModel } from "../../models/order.model"
 import { UserModel } from "../../models/user.model"
 
 const USERS = 'users'
 const ACTIVE = 'active'
+
 export class AuthService {
     static getUsers(): UserModel[] {
         const baseUser: UserModel = {
@@ -17,9 +17,11 @@ export class AuthService {
             address: 'Danijelova 32',
             orders: []
         }
+
         if (localStorage.getItem(USERS) == null) {
             localStorage.setItem(USERS, JSON.stringify([baseUser]))
         }
+
         return JSON.parse(localStorage.getItem(USERS)!)
     }
 
@@ -31,6 +33,7 @@ export class AuthService {
                 return true
             }
         }
+
         return false
     }
 
@@ -45,23 +48,21 @@ export class AuthService {
         return null
     }
 
-    static updateActiveUser(newUserData: UserModel){
+    static updateActiveUser(newUserData: UserModel) {
         const users = this.getUsers()
         for (let u of users) {
             if (u.email === localStorage.getItem(ACTIVE)) {
                 u.firstName = newUserData.firstName
                 u.lastName = newUserData.lastName
                 u.address = newUserData.address
-                u.destination = newUserData.destination
                 u.phone = newUserData.phone
-                
+                u.destination = newUserData.destination
             }
         }
-
         localStorage.setItem(USERS, JSON.stringify(users))
     }
 
-    static updateActiveUserPassword(newPassword: string){
+    static updateActiveUserPassword(newPassword: string) {
         const users = this.getUsers()
         for (let u of users) {
             if (u.email === localStorage.getItem(ACTIVE)) {
@@ -71,16 +72,16 @@ export class AuthService {
         localStorage.setItem(USERS, JSON.stringify(users))
     }
 
-    static logout(){
+    static logout() {
         localStorage.removeItem(ACTIVE)
     }
 
-    static createOrder(order: Partial<OrderModel>, flight: FlightModel){
+    static createOrder(order: Partial<OrderModel>, flight: FlightModel) {
         order.state = 'w'
-        order.flightId=flight.id
+        order.flightId = flight.id
         order.flightNumber = flight.flightNumber
-        order.scheduledAt = flight.scheduledAt
         order.destination = flight.destination
+        order.scheduledAt = flight.scheduledAt
         order.createdAt = new Date().toISOString()
 
         const users = this.getUsers()
@@ -92,16 +93,44 @@ export class AuthService {
         localStorage.setItem(USERS, JSON.stringify(users))
     }
 
-    static getOrdersOnWaiting(){
+    static getOrdersByState(state: 'w' | 'p' | 'c') {
         const users = this.getUsers()
         for (let u of users) {
             if (u.email === localStorage.getItem(ACTIVE)) {
-                return u.orders.filter((o)=> o.state === 'w')
+                return u.orders.filter((o) => o.state === state)
             }
         }
 
         return []
     }
 
-   
+    static cancelOrder(createdAt: string) {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                for (let o of u.orders) {
+                    if (o.state == 'w' && o.createdAt == createdAt) {
+                        o.state = 'c'
+                    }
+                }
+            }
+        }
+
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
+
+    static payOrders() {
+        const users = this.getUsers()
+        for (let u of users) {
+            if (u.email === localStorage.getItem(ACTIVE)) {
+                for (let o of u.orders) {
+                    if (o.state == 'w') {
+                        o.state = 'p'
+                    }
+                }
+            }
+        }
+
+        localStorage.setItem(USERS, JSON.stringify(users))
+    }
 }

@@ -28,7 +28,7 @@ import { Utils } from '../utils';
     MatSelectModule,
     Loading,
     MatListModule,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './user.html',
   styleUrl: './user.css',
